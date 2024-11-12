@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    %meta{ content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type" }/
+    %title Mate-Imperium
+    %link{ rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" }
+    %meta{ content: "width=device-width,initial-scale=1", name: "viewport" }/
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_importmap_tags
+    = favicon_link_tag 'mate-icon.png', rel: 'icon', type: 'image/png'
+  %body
+    .topbar
+      %div.logo
+        %i.bi.bi-house.topbar-icon
+        %span.site-title Mate-Imperium
+
+      %div.auth-links
+        = link_to 'Übersicht', posts_path, class: 'button back-button'
+
+        - if user_signed_in?
+          - if current_user.role == 'admin' || current_user.role == 'manager'
+            %a.admin-button{ href: unapproved_posts_url } Genehmigen
+            %a.admin-button{ href: users_url } Benutzerverwaltung
+          %a.logout-button{ href: destroy_user_session_path, method: :delete, title: "Abmelden" } Abmelden
+        - else
+          %a.login-button{ href: new_user_session_path, title: "Anmelden" } Anmelden
+          %a.register-button{ href: new_user_registration_path, title: "Registrieren" } Registrieren
+
+    = yield

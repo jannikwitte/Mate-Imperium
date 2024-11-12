@@ -1,0 +1,8 @@
+%h2 Kommentar bearbeiten
+= form_with(model: [@post, @comment], html: { class: 'post-form' }, local: true) do |form|
+  .field
+    = form.text_area :content, { class: 'form-textarea' }
+
+  .button-container
+    = form.submit "Änderungen speichern", class: 'submit-button'
+    = link_to 'Abbrechen', @post, class: 'submit-button'

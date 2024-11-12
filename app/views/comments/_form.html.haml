@@ -1,0 +1,4 @@
+= simple_form_for [ @post, @post.comments.build ], html: { class: 'comment-form' } do |form|
+  .form-group
+    = form.input :content, label: 'Kommentar erstellen:', input_html: { class: 'form-input', rows: 4 }, required: false
+    = form.button :submit, 'Kommentar erstellen', class: 'submit-button'

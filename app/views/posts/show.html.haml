@@ -1,0 +1,84 @@
+.container-post
+  .grid-container
+    .image-container
+      - if @post.image.attached?
+        = image_tag @post.image, class: 'post-image'
+
+    .rating-container
+      %h1.post-title= @post.title
+      - if !@post.approved
+        %h2.status-not-approved Status: Nicht genehmigt
+      %ul.rating-list
+        %li
+          %strong Gesamtbewertung
+          %br
+          - full_stars = @post.rating.to_i
+          - empty_stars = 5 - full_stars
+          %span
+            - full_stars.times do
+              %span.rating-star★
+            - empty_stars.times do
+              %span.rating-star☆
+        %li
+          %strong Koffeinbewertung
+          %br
+          - full_stars = @post.calculate_caffeine_rating.to_i
+          - empty_stars = 5 - full_stars
+          %span
+            - full_stars.times do
+              %span.rating-star★
+            - empty_stars.times do
+              %span.rating-star☆
+        %li
+          %strong Diabetes
+          %br
+          - full_stars = @post.nutritional_info.calculate_sugar.to_i
+          - empty_stars = 5 - full_stars
+          %span
+            - full_stars.times do
+              %span.rating-star★
+            - empty_stars.times do
+              %span.rating-star☆
+        %li
+          %strong Bestpreis
+          %br
+          = link_to "#{@post.best_price} €", @post.link
+
+  .description-container
+    %h2 Beschreibung
+    %p= @post.description
+
+  .nutritional-info-container
+    %h3 Nährwerte (pro 100 ml)
+    %ul.nutritional-info
+      %li Kalorien: #{@post.nutritional_info.calories} kcal
+      %li Kohlenhydrate: #{@post.nutritional_info.carbohydrates} g
+      %li Zucker: #{@post.nutritional_info.sugar} g
+      %li Protein: #{@post.nutritional_info.protein} g
+      %li Fett: #{@post.nutritional_info.fat} g
+
+  %h2 Bewertungen und Kommentare
+  .review-container
+    - if user_signed_in?
+      = render 'comments/form'
+    - @post.comments.each do |comment|
+      .comment
+        %div.comment-header
+          - if comment.user
+            %strong= comment.user.email
+            - if current_user && (current_user.role == 'admin' || current_user == comment.user)
+              .comment-actions
+                = link_to ' ', edit_post_comment_path(@post, comment), class: 'bi bi-pencil', title: 'Bearbeiten'
+                = link_to ' ', post_comment_path(@post, comment), method: :delete, data: { confirm: 'Möchten Sie diesen Kommentar wirklich löschen?' }, class: 'bi bi-trash', title: 'Löschen'
+        %p.comment-content= comment.content
+
+
+  - if user_signed_in?
+    %hr
+    .button-container
+      - if current_user.role == 'author' || current_user.role == 'admin'
+        = link_to 'Bearbeiten', edit_post_url(@post), class: 'button edit-button'
+      - if current_user.role == 'admin'
+        = link_to 'Beitrag löschen', post_path(@post), data: { turbo_method: :delete, turbo_confirm: 'Bist du dir sicher?' }, class: 'button destroy-button'
+
+    %hr

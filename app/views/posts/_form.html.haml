@@ -1,0 +1,38 @@
+= simple_form_for @post, html: { class: 'post-form' } do |form|
+  - if @post.errors.any?
+    #error_explanation
+      %h2 Fehler
+      %ul
+        - @post.errors.full_messages.each do |message|
+          %li= message
+
+  %h3.general-info-title Allgemein
+  = form.input :title, label: 'Titel', input_html: { class: 'form-input' }
+
+  = form.input :description, label: 'Beschreibung (Geschmackserlebnis)', input_html: { class: 'form-textarea' }, as: :text
+
+  = form.input :basic_knowledge, label: 'Einführung und wissenwertes', input_html: { class: 'form-textarea' }, as: :text
+
+  = form.input :image, label: 'Bild hochladen', input_html: { class: 'form-file', accept: '.png' }, as: :file
+
+  %br
+  %h3.nutritional-info-title Nährwerte (pro 100 ml)
+  = form.fields_for :nutritional_info do |nutrition_form|
+    = nutrition_form.input :calories, label: 'Kalorien (kcal)', input_html: { class: 'nutritional-input' }, as: :float, step: 0.01
+    = nutrition_form.input :carbohydrates, label: 'Kohlenhydrate (g)', input_html: { class: 'nutritional-input' }, as: :float, step: 0.01
+    = nutrition_form.input :sugar, label: 'Zucker (g)', input_html: { class: 'nutritional-input' }, as: :float, step: 0.01
+    = nutrition_form.input :protein, label: 'Protein (g)', input_html: { class: 'nutritional-input' }, as: :float, step: 0.01
+    = nutrition_form.input :fat, label: 'Fett (g)', input_html: { class: 'nutritional-input' }, as: :float, step: 0.01
+
+
+  %br
+  %h3.additional-info-title Zusätzliche Informationen
+  = form.input :link, label: 'Best Preis Link', input_html: { class: 'form-input' }
+
+  = form.input :best_price, label: 'Gefundener Bestpreis', input_html: { class: 'form-input' }, as: :float, step: 0.01
+
+  = form.input :caffeine, label: 'Koffein (mg)', input_html: { class: 'form-input' }
+
+  = form.input :rating, label: 'Sternebewertung', input_html: { class: 'form-input' }, as: :float, in: 1..5
+
+  = form.button :submit, 'Beitrag erstellen', class: 'submit-button'

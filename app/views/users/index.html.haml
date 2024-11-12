@@ -1,0 +1,18 @@
+%h1 Benutzerverwaltung
+
+%table.table.table-striped.table-bordered
+  %thead
+    %tr
+      %th E-Mail
+      %th Rolle
+      %th Aktionen
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.email
+        %td= user.role
+        %td
+          = link_to 'Bearbeiten', edit_user_path(user), class: 'btn btn-primary'
+          = link_to 'Löschen', user_path(user), method: :delete, data: { confirm: 'Bist du sicher, dass du diesen Benutzer löschen möchtest?' }, class: 'btn btn-danger'
+
+  = link_to 'Neuen Benutzer anlegen', new_user_path, class: 'button new-post-button mb-3'

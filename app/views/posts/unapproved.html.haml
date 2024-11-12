@@ -1,0 +1,17 @@
+%h1 Beiträge genehmigen
+
+%table.table
+  %thead
+    %tr
+      %th Titel
+      %th Autor
+      %th Aktionen
+  %tbody
+    - @posts.each do |post|
+      %tr
+        %td= link_to post.title, post, class: 'post-title'
+        %td= post.user.present? ? post.user.email : 'keine E-Mail'
+        %td
+          .button-container
+            = link_to 'Genehmigen', approve_post_path(post), method: :patch, class: 'approve-button'
+            = link_to 'Ablehnen', reject_post_path(post), method: :delete, class: 'reject-button', data: { confirm: 'Sind Sie sicher, dass Sie diesen Beitrag ablehnen möchten?' }

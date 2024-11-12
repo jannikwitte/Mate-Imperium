@@ -1,0 +1,10 @@
+%div.grid
+  - @posts.each do |post|
+    - if post.approved?
+      %div.grid-item
+        %h2.post-title= link_to post.title, post
+        = image_tag post.image, class: 'post-image'
+
+- if user_signed_in?
+  - if can?(:create, Post)
+    = link_to 'Neuen Beitrag erstellen', new_post_path, class: 'button new-post-button'

@@ -1,0 +1,19 @@
+%h1 Benutzer bearbeiten
+
+= form_with(model: @user, local: true) do |form|
+  .form-group
+    = form.label :email
+    = form.email_field :email, class: 'form-control'
+
+  .form-group
+    = form.label :password
+    = form.password_field :password, class: 'form-control'
+
+  .form-group
+    = form.label :role
+    = form.select :role, User::VALID_ROLES, { include_blank: true }, class: 'form-control'
+
+  .form-group
+    = form.submit 'Aktualisieren', class: 'btn btn-primary'
+
+= link_to 'Zurück', users_path, class: 'btn btn-secondary'
