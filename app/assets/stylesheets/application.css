@@ -97,9 +97,10 @@ body {
 }
 
 .post-image {
-    width: 100%;
+    max-width: 150px;
     height: auto;
     border-radius: 5px;
+    display: block;
 }
 
 .button.new-post-button {
